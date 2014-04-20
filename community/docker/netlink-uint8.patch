@@ -1,0 +1,13 @@
+diff --git a/pkg/netlink/netlink_linux.go b/pkg/netlink/netlink_linux.go
+index f4aa92e..5520215 100644
+--- a/pkg/netlink/netlink_linux.go
++++ b/pkg/netlink/netlink_linux.go
+@@ -848,7 +848,7 @@ func setBridgeMacAddress(s int, name string) error {
+ 	copy(ifr.IfrnName[:], name)
+ 
+ 	for i := 0; i < 6; i++ {
+-		ifr.IfruHwaddr.Data[i] = int8(rand.Intn(255))
++		ifr.IfruHwaddr.Data[i] = uint8(rand.Intn(255))
+ 	}
+ 
+ 	ifr.IfruHwaddr.Data[0] &^= 0x1 // clear multicast bit

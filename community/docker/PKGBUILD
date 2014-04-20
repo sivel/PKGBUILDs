@@ -5,7 +5,7 @@
 #  - ARM patches, adjustments
 
 pkgname=docker
-pkgver=0.9.1
+pkgver=0.10.0
 pkgrel=1
 epoch=1
 pkgdesc='Pack, ship and run any application as a lightweight container'
@@ -21,15 +21,18 @@ options=('!strip')
 install=$pkgname.install
 source=("git+https://github.com/dotcloud/docker.git#tag=v$pkgver"
         'docker-arm.patch'
-        'btrfs-arm.patch')
+        'btrfs-arm.patch'
+        'netlink-uint8.patch')
 md5sums=('SKIP'
          '47cc1cdf900af66660bfa3402012ea71'
-         '1ec4b4b42eb80f2692cee757324370b0')
+         '23ee91f730c9420438f1969003c6693c'
+         '0a52bdfc6b943d229b33743e77d583b3')
 
 prepare() {
   cd "docker"
   patch -p1 -i ../docker-arm.patch
   patch -p1 -i ../btrfs-arm.patch
+  patch -p1 -i ../netlink-uint8.patch
   find . -name '*.go' | xargs sed --in-place= -e 's/\/\/ +build amd64/\/\/ +build arm/'
   find . -name '*.go' | xargs sed --in-place= -e 's/\/\/ +build !linux !amd64/\/\/ +build !linux !arm/'
   find . -name '*.go' | xargs sed --in-place= -e 's/\/\/ +build linux,amd64/\/\/ +build linux,arm/'
